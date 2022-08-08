@@ -15,23 +15,21 @@ val indexer: Array[PipelineStage] = Array(new StringIndexer().
     setOutputCol("label_index").
     setHandleInvalid("skip"));
 
-var one_hot_encoder: Array[PipelineStage] = Array(new OneHotEncoder().
-    setInputCol("label_index").
-    setOutputCol("label_vec"))
-
 val pipelineTmp = new Pipeline().
-    setStages(indexer ++ one_hot_encoder)
+    setStages(indexer)
 
 val df = pipelineTmp.fit(raw_DF).
     transform(raw_DF).
-    select("label_vec", "features")
+    select("label_index", "features")
 
 val assembler = new VectorAssembler().
-    setInputCols(Array("label_vec")).
-    setOutputCol("label")
+    setInputCols(Array("features")).
+    setOutputCol("features_vec")
 
 val output = assembler.transform(df).
-    select("label", "features")
+    select("label_index", "features_vec")
+
+val final_output = output.withColumnRenamed("label_index", "label").withColumnRenamed("features_vec", "features")
     
-output.write.format("parquet").
+final_output.write.format("parquet").
     save("hdfs://master:8020/bigdata/pt7_indexed_enconded_data")   
