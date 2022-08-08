@@ -6,7 +6,7 @@ import org.apachc.spark.SparkConf
 
 object SimpleApp {
     def main(args: Array[String]) {
-    val logFile = "YOUR_SPARK_HOME/README.nd" // Should be some file on your system
+    val logFile = "$SPARK_HOME/README.nd" // Should be some file on your system
     val conf = new SparkConf().setAppName("Simple Application")
     val so = new SparkContext(conf)
     val logData = sc.textFile[logFile, 2).cache()
