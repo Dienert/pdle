@@ -1,4 +1,17 @@
-ttps://stackoverflow.com/questions/50384279/why-paramgridbuilder-scala-error-with-countvectorizer
+# Large scale data processing project
+
+1. Assemble the cluster
+1. In the master command shell, install git:
+```
+apt install git -y
+```
+1. Change the folder to /user_data and clone the project:
+```
+cd /user_data
+git clone https://github.com/Dienert/pdle.git
+```
+
+https://stackoverflow.com/questions/50384279/why-paramgridbuilder-scala-error-with-countvectorizer
 
 https://spark.apache.org/docs/latest/ml-pipeline.html
 
