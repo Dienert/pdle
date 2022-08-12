@@ -170,17 +170,29 @@ The chosen model was the logistic regression with the following parameters:
 
 The gridSearch made a variation between 0.1 and 0.01 for regParam.
 
-The best resulting metrics for the model training were:
+For the first repetition, the best resulting metrics for the model training were:
 * Accuracy = 0.9783773060900615
 * Weighted precision: 0.979119849930991
 * Weighted recall: 0.9783773060900613
 * Weighted F1 score: 0.9782972371066493
 * Weighted false positive rate: 0.014321206218802831
 
-The confusion matrices:
+The confusion matrices of the first repetition:
 
-<img src="images/cmatrix.png" alt="Confusion Matrix"/>
-<img src="images/normalized_cmatrix.png" alt="Normalized Confusion Matrix"/>
+<img src="images/cmatrix_01.png" alt="Confusion Matrix"/>
+<img src="images/normalized_cmatrix_01.png" alt="Normalized Confusion Matrix"/>
+
+For the second repetition, the best resulting metrics for the model training were:
+* Accuracy = 0.9852177387135438
+* Weighted precision: 0.9854439576783208
+* Weighted recall: 0.9852177387135438
+* Weighted F1 score: 0.9851451594764805
+* Weighted false positive rate: 0.009088448884475419
+
+The confusion matrices of the first repetition:
+
+<img src="images/cmatrix_02.png" alt="Confusion Matrix"/>
+<img src="images/normalized_cmatrix_02.png" alt="Normalized Confusion Matrix"/>
 
 And the trained model saved in the HDFS:
 
