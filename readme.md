@@ -157,6 +157,36 @@ cd /user_data/pdle/task_02/lr
 sbt package
 sh execute.sh
 ```
+
+## Model and Results
+
+The chosen model was the logistic regression with the following parameters:
+```scala
+    val lr = new LogisticRegression().
+      setMaxIter(10).
+      setRegParam(0.3).
+      setElasticNetParam(0.8)
+```
+
+The gridSearch made a variation between 0.1 and 0.01 for regParam.
+
+The best resulting metrics for the model training were:
+* Accuracy = 0.9783773060900615
+* Weighted precision: 0.979119849930991
+* Weighted recall: 0.9783773060900613
+* Weighted F1 score: 0.9782972371066493
+* Weighted false positive rate: 0.014321206218802831
+
+The confusion matrices:
+
+<img src="images/cmatrix.png" alt="Confusion Matrix"/>
+<img src="images/normalized_cmatrix.png" alt="Normalized Confusion Matrix"/>
+
+And the trained model saved in the HDFS:
+
+<img src="images/saved_model.png" alt="Normalized Confusion Matrix"/>
+
+
 ## References
 
 https://stackoverflow.com/questions/50384279/why-paramgridbuilder-scala-error-with-countvectorizer
