@@ -63,7 +63,7 @@ val df = {
 };df.show()
 ```
 
-This is the expected result of this command:
+This is the expected result for this command, as shown in the project specification of Task 01.
 
 <img src="images/output_01.png" alt="Output from item 6"/>
 
@@ -83,67 +83,85 @@ df.groupBy("label").count.show()
 ```scala
 df.groupBy("label").count.sort(desc("count")).show()
 ```
+Expected result for this command:
+
+<img src="images/output_02.png" alt="Output from item 8"/>
 
 
-<img src="images/output_01.png" alt="Output from item 6"/>
+9. Processing the second job: etl-pt7.scala
+```
+spark-shell --master spark://master:7077 -i /user_data/pdle/task_01/etl-pt7.scala
+```
 
+// If the spark-shell is already active, we can execute the same comand in the following maner:
+:load /user_data/pdle/task_01/etl-pt7.scala
 
-// Executando segundo script
-// spark-shell --master spark://master:7077 -i /user_data/etl-pt7.scala
-// com o spark-shell já ativo, pode-se rodar da seguinte maneira:
-:load /user_data/etl-pt7.scala
-
-// Vendo resultado do segundo script
-
+10. To verify the script result, we can do the following code in spark-shell (scala):
+```scala
 val df2 = { 
 	spark.read
 	.format("parquet")
 	.load("hdfs://master:8020/bigdata/pt7-hash.parquet")
-}
+};df2.show()
+```
 
-df2.show()
+<img src="images/output_03.png" alt="Output from item 10"/>
+This is the expected result for this command, as shown in the project specification of Task 01 for the second job
 
-df2.groupBy("label").count.sort(desc("count")).show()
+<br />
 
-spark-shell --master spark://master:7077 -i /user_data/logisticRegression.scala
+> **Warning**
+> To avoid Java Heap Space, we suggest restarting the cluster to continue to the next task with the following commands as in section 4:
+```
+/user_data/admin/avertlux.sh
+/user_data/admin/fiatlux.sh
+```
 
-:load /user_data/encoding.scala
+## Task 02
 
+/user_data/pdle/task_02/src/run-in-spark-shell.sh /user_data/pdle/task_02/src/main/scala/01_encoding.scala
+
+1. Install the sbt command in the cluster. This command will generate a jar so each scala script can be executed in the Yarn Cluster.
+```
+sh /user_data/pdle/task_02/install_sbt.sh
+```
+
+hadoop fs -mkdir /logs
+
+2. Build the package of the enconding
+```
+cd /user_data/pdle/task_02/encoding
+sbt package
+```
+
+1. Transforming the labels into numbers and the features as VectorAssembler
+```
+spark-shell --master spark://master:7077 -i /user_data/pdle/task_02/src/main/scala/01_encoding.scala
+```
+
+or the following command with the spark-shell is already open:
+```
 :load /user_data/logisticRegression.scala
+```
 
+> **Warning**
+> If you get the following error message:
 
+```scala
+org.apache.spark.sql.AnalysisException: path hdfs://master:8020/bigdata/pt7_indexed_enconded_data already exists.
+```
 
-
-
-
-01_encoding.scala
-
-import org.apache.spark.ml.PipelineStage
-import org.apache.spark.ml.Pipeline
-import org.apache.spark.ml.feature.StringIndexer
-import org.apache.spark.ml.feature.OneHotEncoder
-
-val raw_DF = spark.read.format("parquet").load("hdfs://master:8020/bigdata/pt7-hash.parquet")
-//raw_DF.groupBy("label").count.sort(desc("count")).show()
-val textDF = raw_DF.select("label")
-
-val originalColumns = raw_DF.columns
-val allIndexedCategoricalColumns = textDF.columns
-val originalColumns = allIndexedCategoricalColumns
-
-val indexer: Array[PipelineStage] = Array(new StringIndexer().setInputCol("label").setOutputCol("label_index").setHandleInvalid("skip"));
-var one_hot_encoder: Array[PipelineStage] = Array(new OneHotEncoder().setInputCol("label_index").setOutputCol("label_vec"))
-
-val pipelineTmp = new Pipeline().setStages(indexer ++ one_hot_encoder)
-val df = pipelineTmp.fit(raw_DF).transform(raw_DF)
-
-val output = df.select("label_vec", "features").withColumnRenamed("label_vec", "label")
-output.write.format("parquet").save("hdfs://master:8020/bigdata/pt7_indexed_enconded_data")   
-
-
+Execute the following command to delete the existing folder in normal shell, not in spark-shell (open a new one or excute ctrl+c to leave spark-shell):
+```
 hadoop fs -rm -r -f /bigdata/pt7_indexed_enconded_data
+```
 
+The command was successful if the following output has been shown:
+```
+Deleted /bigdata/pt7_indexed_enconded_data
+```
 
+Now repeat the command 1 of Task 02.
 
 02_lr.scala
 
@@ -196,3 +214,5 @@ https://spark.apache.org/docs/latest/api/scala/org/apache/spark/ml/evaluation/Mu
 https://spark.apache.org/docs/latest/ml-tuning.html
 
 https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html
+
+https://spark.apache.org/docs/1.2.0/quick-start.html#self-contained-applications
