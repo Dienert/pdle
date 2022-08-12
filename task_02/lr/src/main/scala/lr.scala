@@ -14,7 +14,7 @@ import org.apache.spark.mllib.evaluation.MulticlassMetrics
 import org.apache.spark.mllib.regression.LabeledPoint
 import org.apache.spark.mllib.linalg.{Vector, Vectors}
 
-object Encoding {
+object LR {
   def main(args: Array[String]) {
     val logFile = "/logs/simple.log" // Should be some file on your system
     val conf = new SparkConf().setAppName("Encoding")
@@ -98,6 +98,8 @@ object Encoding {
     println(s"Weighted recall: ${metrics.weightedRecall}")
     println(s"Weighted F1 score: ${metrics.weightedFMeasure}")
     println(s"Weighted false positive rate: ${metrics.weightedFalsePositiveRate}")
+
+    cvModel.save("hdfs://master:8020/bigdata/models/lr")
 
     }
 }

@@ -151,7 +151,12 @@ Deleted /bigdata/pt7_indexed_enconded_data
 
 Now repeat the item 2 of Task 02.
 
-3. Build the package of the logistic regression training and run the code in the Yarn Cluster
+3. Create a folder to save the trained models
+```
+hadoop fs -mkdir -p /bigdata/models
+```
+
+4. Build the package of the logistic regression training and run the code in the Yarn Cluster
 ```
 cd /user_data/pdle/task_02/lr
 sbt package
