@@ -23,12 +23,6 @@ git clone https://github.com/Dienert/pdle.git
 /user_data/admin/fiatlux.sh
 ```
 
-<!-- spark-shell
-// scala version
-util.Properties.versionMsg
-// spark version
-sc.version  -->
-
 ## Task 01
 
 1. Listing the folders of the HDFS to see if something is there:
@@ -73,12 +67,13 @@ This is the expected result for this command, as shown in the project specificat
 
 <img src="images/output_01.png" alt="Output from item 6"/>
 
-
-<!-- // sem truncar
-//df.show(false) 
-
-// Limpando todas as variáveis do spark-shell
-:reset -->
+* Hints on Spark-shell:
+```scala
+df.show(false) // showing a dataframe without truncating columns
+:reset // Cleaning all spark-shell variables
+util.Properties.versionMsg // scala version
+sc.version  // spark version
+```
 
 7. Still in the scala shell, we can count the number of registers by label
 ```scala
