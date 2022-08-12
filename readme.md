@@ -5,53 +5,54 @@
 ```
 apt install git -y
 ```
-1. Change the folder to /user_data and clone the project:
+3. Change the folder to /user_data and clone the project:
 ```
 cd /user_data
 git clone https://github.com/Dienert/pdle.git
 ```
 
-https://stackoverflow.com/questions/50384279/why-paramgridbuilder-scala-error-with-countvectorizer
+4. Restart the cluster
+```
+/user_data/admin/avertlux.sh
+/user_data/admin/fiatlux.sh
+```
 
-https://spark.apache.org/docs/latest/ml-pipeline.html
-
-https://spark.apache.org/docs/latest/ml-pipeline.html#model-selection-hyperparameter-tuning
-
-https://spark.apache.org/docs/latest/ml-classification-regression.html#logistic-regression
-
-https://spark.apache.org/docs/latest/api/scala/org/apache/spark/ml/evaluation/MulticlassClassificationEvaluator.html
-
-https://spark.apache.org/docs/latest/ml-tuning.html
-
-https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html
-
-
-spark-shell
+<!-- spark-shell
 // scala version
 util.Properties.versionMsg
 // spark version
-sc.version 
+sc.version  -->
 
+## Task 01
 
-/user_data/admin/avertlux.sh
-/user_data/admin/fiat-lux.sh
-
-// Listando diretórios do HDFS para verificar os os arquivos já estão lá
+1. Listing the folders of the HDFS to see if something is there:
+```
 hadoop fs -ls /
-hadoop fs -ls /bigdata/
+```
 
-// Criando pasta no hdfs
+2. Since there isn't anything there, let's create the folder we will work and verify it has been created:
+```
 hadoop fs -mkdir -p /bigdata/
+hadoop fs -ls /
+```
 
-// Copiar os arquivos para etl-pt7.scala, labels-pt7-raw.scala, load-lr.scala e a pasta pt7-raw para  o master do docker
+3. Copying files to HDFS
+```
+hadoop fs -put /user_data/pdle/data/pt7-raw hdfs://master:8020/bigdata/
+```
 
-// Copiando arquivos para o HDFS
-hadoop fs -put /user_data/pt7-raw hdfs://master:8020/bigdata/
+4. Verifying the files have been copied
+```
+hadoop fs -ls /bigdata/pt7-raw/
+```
 
-// Executando o primeiro script
-spark-shell --master spark://master:7077 -i /user_data/labels-pt7-raw.scala
+5. Processing the first job: labels-pt7-raw.scala
+```
+spark-shell --master spark://master:7077 -i /user_data/pdle/task_01/labels-pt7-raw.scala
+```
 
-// Vendo o resultado do primeiro script:
+6. As the command above has opened the scala shell, we can verify the script has been executed showing the transformed data
+```scala
 val df = { 
 	spark.read
 	.format("parquet")
@@ -59,19 +60,29 @@ val df = {
 	.withColumnRenamed("_c0","label")
 	.withColumnRenamed("_c1","url")
 	.withColumnRenamed("_c3","text64byte")
-}
-df.show()
-// sem truncar
+};df.show()
+```
+
+This is the expected result of this command:
+
+<img src="images/output_01.png" alt="Output from item 6"/>
+
+
+<!-- // sem truncar
 //df.show(false) 
 
 // Limpando todas as variáveis do spark-shell
-:reset
+:reset -->
 
-// Contando registros por rótulo
+7. Still in the scala shell, we can count the number of registers by label
+```scala
 df.groupBy("label").count.show()
+```
 
-// Contando registros por rótulo e ordenando de forma decrescente
+8. Or we can count the number of registers by label and order them in a decreasing way
+```scala
 df.groupBy("label").count.sort(desc("count")).show()
+```
 
 // Executando segundo script
 // spark-shell --master spark://master:7077 -i /user_data/etl-pt7.scala
@@ -164,3 +175,20 @@ val cv = new CrossValidator()
   .setParallelism(2)  // Evaluate up to 2 parameter settings in parallel
 
 val cvModel = cv.fit(trainingData)
+
+
+* References
+
+https://stackoverflow.com/questions/50384279/why-paramgridbuilder-scala-error-with-countvectorizer
+
+https://spark.apache.org/docs/latest/ml-pipeline.html
+
+https://spark.apache.org/docs/latest/ml-pipeline.html#model-selection-hyperparameter-tuning
+
+https://spark.apache.org/docs/latest/ml-classification-regression.html#logistic-regression
+
+https://spark.apache.org/docs/latest/api/scala/org/apache/spark/ml/evaluation/MulticlassClassificationEvaluator.html
+
+https://spark.apache.org/docs/latest/ml-tuning.html
+
+https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html
