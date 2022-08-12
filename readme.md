@@ -124,23 +124,6 @@ sbt package
 sh execute.sh
 ```
 
-2. Build the package of the logistic regression training and run the code in the Yarn Cluster
-```
-cd /user_data/pdle/task_02/lr
-sbt package
-sh execute.sh
-```
-
-1. Transforming the labels into numbers and the features as VectorAssembler
-```
-spark-shell --master spark://master:7077 -i /user_data/pdle/task_02/src/main/scala/01_encoding.scala
-```
-
-or the following command with the spark-shell is already open:
-```
-:load /user_data/logisticRegression.scala
-```
-
 > **Warning**
 > If you get the following error message:
 
@@ -158,45 +141,15 @@ The command was successful if the following output has been shown:
 Deleted /bigdata/pt7_indexed_enconded_data
 ```
 
-Now repeat the command 1 of Task 02.
+Now repeat the item 2 of Task 02.
 
-02_lr.scala
-
-
-
-import org.apache.spark.ml.classification.LogisticRegression
-import org.apache.spark.ml.Pipeline
-import org.apache.spark.ml.evaluation.BinaryClassificationEvaluator
-import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
-import org.apache.spark.ml.tuning.{CrossValidator, ParamGridBuilder, TrainValidationSplit}
-
-val df = spark.read.format("parquet").load("hdfs://master:8020/bigdata/pt7_indexed_enconded_data")
-
-val lr = new LogisticRegression()
-  .setMaxIter(10)
-  .setRegParam(0.3)
-  .setElasticNetParam(0.8)
-
-val Array(trainingData, testData) = df.randomSplit(Array(0.7, 0.3))
-
-val pipeline = new Pipeline().setStages(Array(lr))
-
-val paramGrid = new ParamGridBuilder()
-  .addGrid(lr.regParam, Array(0.1, 0.01))
-  .build()
-
-val cv = new CrossValidator()
-  .setEstimator(pipeline)
-  .setEvaluator(new BinaryClassificationEvaluator)
-//   .setEvaluator(new MulticlassClassificationEvaluator)
-  .setEstimatorParamMaps(paramGrid)
-  .setNumFolds(2)  // Use 3+ in practice
-  .setParallelism(2)  // Evaluate up to 2 parameter settings in parallel
-
-val cvModel = cv.fit(trainingData)
-
-
-* References
+3. Build the package of the logistic regression training and run the code in the Yarn Cluster
+```
+cd /user_data/pdle/task_02/lr
+sbt package
+sh execute.sh
+```
+## References
 
 https://stackoverflow.com/questions/50384279/why-paramgridbuilder-scala-error-with-countvectorizer
 
