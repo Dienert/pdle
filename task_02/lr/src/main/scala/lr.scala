@@ -54,7 +54,7 @@ object Encoding {
 
     val results =  cvModel.
       transform(testData).
-      select("predition", "label")
+      select("prediction", "label")
 
     // Compute raw scores on the test set
     val predictionAndLabels = results.
