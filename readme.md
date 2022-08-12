@@ -110,28 +110,25 @@ This is the expected result for this command, as shown in the project specificat
 
 <br />
 
-> **Warning**
-> To avoid Java Heap Space, we suggest restarting the cluster to continue to the next task with the following commands as in section 4:
-```
-/user_data/admin/avertlux.sh
-/user_data/admin/fiatlux.sh
-```
-
 ## Task 02
-
-/user_data/pdle/task_02/src/run-in-spark-shell.sh /user_data/pdle/task_02/src/main/scala/01_encoding.scala
 
 1. Install the sbt command in the cluster. This command will generate a jar so each scala script can be executed in the Yarn Cluster.
 ```
 sh /user_data/pdle/task_02/install_sbt.sh
 ```
 
-hadoop fs -mkdir /logs
-
-2. Build the package of the enconding
+2. Build the package of the enconding and run the code in the Yarn Cluster
 ```
 cd /user_data/pdle/task_02/encoding
 sbt package
+sh execute.sh
+```
+
+2. Build the package of the logistic regression training and run the code in the Yarn Cluster
+```
+cd /user_data/pdle/task_02/lr
+sbt package
+sh execute.sh
 ```
 
 1. Transforming the labels into numbers and the features as VectorAssembler
