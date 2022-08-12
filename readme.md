@@ -84,6 +84,10 @@ df.groupBy("label").count.show()
 df.groupBy("label").count.sort(desc("count")).show()
 ```
 
+
+<img src="images/output_01.png" alt="Output from item 6"/>
+
+
 // Executando segundo script
 // spark-shell --master spark://master:7077 -i /user_data/etl-pt7.scala
 // com o spark-shell já ativo, pode-se rodar da seguinte maneira:
