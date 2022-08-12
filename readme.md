@@ -93,10 +93,12 @@ Expected result for this command:
 spark-shell --master spark://master:7077 -i /user_data/pdle/task_01/etl-pt7.scala
 ```
 
-// If the spark-shell is already active, we can execute the same comand in the following maner:
+If the spark-shell is already active, we can execute the same comand in the following maner:
+```
 :load /user_data/pdle/task_01/etl-pt7.scala
+```
 
-10. To verify the script result, we can do the following code in spark-shell (scala):
+10. To verify the script result, we can execute the following code in spark-shell (scala):
 ```scala
 val df2 = { 
 	spark.read
@@ -106,13 +108,13 @@ val df2 = {
 ```
 
 <img src="images/output_03.png" alt="Output from item 10"/>
-This is the expected result for this command, as shown in the project specification of Task 01 for the second job
+This is the expected result for this command, as shown in the project specification of Task 01 for the second job.
 
 <br />
 
 ## Task 02
 
-1. Install the sbt command in the cluster. This command will generate a jar so each scala script can be executed in the Yarn Cluster.
+1. Install the sbt command in the cluster. This command will generate a jar so each scala script so it can be executed in the Yarn Cluster.
 ```
 sh /user_data/pdle/task_02/install_sbt.sh
 ```
