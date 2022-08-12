@@ -1,7 +1,13 @@
 # Large scale data processing project
 
 1. Assemble the cluster
-1. In the master command shell, install git:
+```
+unzip resources/cluster.zip
+cd resources/cluster/
+docker compose up
+```
+
+2. In the master command shell, install git:
 ```
 apt install git -y
 ```
@@ -168,3 +174,5 @@ https://spark.apache.org/docs/latest/ml-tuning.html
 https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html
 
 https://spark.apache.org/docs/1.2.0/quick-start.html#self-contained-applications
+
+https://spark.apache.org/docs/2.2.0/mllib-evaluation-metrics.html
