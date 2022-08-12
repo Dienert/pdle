@@ -176,3 +176,5 @@ https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticR
 https://spark.apache.org/docs/1.2.0/quick-start.html#self-contained-applications
 
 https://spark.apache.org/docs/2.2.0/mllib-evaluation-metrics.html
+
+https://spark.apache.org/docs/latest/running-on-yarn.html
